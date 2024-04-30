@@ -25,7 +25,8 @@ function createElement(tag, attributes, ...children) {
 
 // データからHTMLを生成する関数
 function createHTML(data, i) {
-  const [title, content] = data[1].split("\n");
+  const rawcontent = data[1].split("\n");
+  const [title,content] = [rawcontent[0],rawcontent.slice(1).join("")]
   const container = createElement("div", {
     className: "option bottom",
     dataset: { srId: i },
