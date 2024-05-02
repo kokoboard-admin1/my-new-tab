@@ -26,7 +26,7 @@ function createElement(tag, attributes, ...children) {
 // データからHTMLを生成する関数
 function createHTML(data, i) {
   const rawcontent = data[1].split("\n");
-  const [title,content] = [rawcontent[0],rawcontent.slice(1).join("")]
+  const [title, content] = [rawcontent[0], rawcontent.slice(1).join("")];
   const container = createElement("div", {
     className: "option bottom",
     dataset: { srId: i },
@@ -34,17 +34,28 @@ function createHTML(data, i) {
       visibility: "visible",
       opacity: i,
       transform: "matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)",
-      transition: "opacity 1.6s cubic-bezier(0.5, 0, 0, 1) 0.1s, transform 1.6s cubic-bezier(0.5, 0, 0, 1) 0.1s",
+      transition:
+        "opacity 1.6s cubic-bezier(0.5, 0, 0, 1) 0.1s, transform 1.6s cubic-bezier(0.5, 0, 0, 1) 0.1s",
     },
   });
-  const checkbox = createElement("input", { type: "checkbox", id: `toggle${i}`, className: "toggle" });
-  const label = createElement("label", { className: "title", htmlFor: `toggle${i}` });
+  const checkbox = createElement("input", {
+    type: "checkbox",
+    id: `toggle${i}`,
+    className: "toggle",
+  });
+  const label = createElement("label", {
+    className: "title",
+    htmlFor: `toggle${i}`,
+  });
   const fromDiv = createElement("div", { className: "from" });
   const faviconImg = createElement("img", {
     className: "favicon",
     src: "https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://getbootstrap.jp/docs/5.3/components/accordion/&size=16",
   });
-  const urlDiv = createElement("div", { className: "url", textContent: "https://kokoboard.cloudfree.jp" });
+  const urlDiv = createElement("div", {
+    className: "url",
+    textContent: "https://kokoboard.cloudfree.jp",
+  });
   const nameDiv = createElement("div", { textContent: title });
   const contentDiv = createElement("div", { className: "content" });
   const pTag = createElement("p", { textContent: content });
@@ -93,20 +104,19 @@ function fetchDataAndGenerateHTML() {
     });
 }
 
-
 window.addEventListener("load", (event) => {
+  fetchDataAndGenerateHTML();
   console.log("loading");
-  try{
-  var memo = localStorage.getItem("memo");
-  console.log(memo)
-
-	}catch(e){
-		console.log(e)
-	}
-	$(".memo-box").val(memo)
+  try {
+    var memo = localStorage.getItem("memo");
+    console.log(memo);
+  } catch (e) {
+    console.log(e);
+  }
+  $(".memo-box").val(memo);
 });
-$(".save").click(function() {
-var memo = $(".memo-box").val()
-localStorage.setItem("memo", memo);
-console.log(memo)
-})
+$(".save").click(function () {
+  var memo = $(".memo-box").val();
+  localStorage.setItem("memo", memo);
+  console.log(memo);
+});
