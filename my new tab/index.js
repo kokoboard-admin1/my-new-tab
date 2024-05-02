@@ -11,54 +11,107 @@ const config = {
   },
 };
 
-// HTML要素を生成する関数
-function createElement(tag, attributes, ...children) {
-  const element = document.createElement(tag);
-  for (let key in attributes) {
-    element[key] = attributes[key];
-  }
-  for (let child of children) {
-    element.appendChild(child);
-  }
-  return element;
+// データを取得してHTMLを生成する
+function fetchDataAndGenerateHTML() {
+  fetch(config.url, config.options)
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      data.info.reverse();
+
+      let index = 1;
+      for (let entry of data.info) {
+        const html = createHTML(entry, index);
+        appendHTML(html);
+        index += 1;
+      }
+
+      hideLoadingScreen();
+      applyScrollReveal();
+    })
+    .catch((error) => {
+      console.error("データの取得エラー:", error);
+      hideLoadingScreen();
+    });
 }
 
-// データからHTMLを生成する関数
-function createHTML(data, i) {
-  const rawcontent = data[1].split("\n");
-  const [title, content] = [rawcontent[0], rawcontent.slice(1).join("")];
-  const container = createElement("div", {
-    className: "option bottom",
-    dataset: { srId: i },
+// ローディング画面を非表示にする
+function hideLoadingScreen() {
+  $("#loadingScreen").addClass("hidden").delay(500).remove();
+}
+
+// スクロールリベールのアニメーションを適用する
+function applyScrollReveal() {
+  ScrollReveal().reveal(".bottom", {
+    duration: 1600,
+    origin: "bottom",
+    distance: "50px",
+    viewFactor: 0,
+    delay: 100,
+    reset: false,
+  });
+}
+
+// ページの読み込み完了時のイベントリスナー
+$(document).ready(function() {
+  fetchDataAndGenerateHTML();
+  console.log("読み込み中");
+  try {
+    var memo = localStorage.getItem("memo");
+    console.log(memo);
+  } catch (e) {
+    console.error("ローカルストレージのアクセスエラー:", e);
+  }
+  $(".memo-box").val(memo);
+
+  // 保存ボタンのイベントリスナー
+  $(".save").click(function () {
+    var memo = $(".memo-box").val();
+    localStorage.setItem("memo", memo);
+    console.log(memo);
+  });
+});
+
+// HTML要素を生成する
+function createHTML(data, index) {
+  const rawContent = data[1].split("\n");
+  const [title, content] = [rawContent[0], rawContent.slice(1).join("")];
+
+  const container = $("<div>", {
+    class: "option bottom",
+    "data-sr-id": index,
     style: {
       visibility: "visible",
-      opacity: i,
+      opacity: index,
       transform: "matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)",
       transition:
         "opacity 1.6s cubic-bezier(0.5, 0, 0, 1) 0.1s, transform 1.6s cubic-bezier(0.5, 0, 0, 1) 0.1s",
     },
   });
-  const checkbox = createElement("input", {
+
+  const checkbox = $("<input>", {
     type: "checkbox",
-    id: `toggle${i}`,
-    className: "toggle",
+    id: `toggle${index}`,
+    class: "toggle",
   });
-  const label = createElement("label", {
-    className: "title",
-    htmlFor: `toggle${i}`,
+
+  const label = $("<label>", {
+    class: "title",
+    for: `toggle${index}`,
   });
-  const fromDiv = createElement("div", { className: "from" });
-  const faviconImg = createElement("img", {
-    className: "favicon",
+
+  const fromDiv = $("<div>", { class: "from" });
+  const faviconImg = $("<img>", {
+    class: "favicon",
     src: "https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://getbootstrap.jp/docs/5.3/components/accordion/&size=16",
   });
-  const urlDiv = createElement("div", {
-    className: "url",
-    textContent: "https://kokoboard.cloudfree.jp",
+  const urlDiv = $("<div>", {
+    class: "url",
+    text: "https://kokoboard.cloudfree.jp",
   });
-  const nameDiv = createElement("div", { textContent: title });
-  const contentDiv = createElement("div", { className: "content" });
-  const pTag = createElement("p", { textContent: content });
+  const nameDiv = $("<div>").text(title);
+  const contentDiv = $("<div>", { class: "content" });
+  const pTag = $("<p>").text(content);
 
   fromDiv.append(faviconImg, urlDiv);
   label.append(fromDiv, nameDiv);
@@ -68,55 +121,7 @@ function createHTML(data, i) {
   return container;
 }
 
-// ページにHTMLを追加する関数
+// HTMLをページに追加する
 function appendHTML(html) {
-  const target = document.querySelector("body > div.info-box");
-  target.appendChild(html);
+  $("body > div.info-box").append(html);
 }
-
-// データをフェッチしてHTMLを生成・追加する関数
-function fetchDataAndGenerateHTML() {
-  fetch(config.url, config.options)
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
-      data.info.reverse();
-
-      let i = 1;
-      for (let entry of data.info) {
-        const html = createHTML(entry, i);
-        appendHTML(html);
-        i += 1;
-      }
-
-      const loadingScreen = document.getElementById("loadingScreen");
-      loadingScreen.classList.add("hidden");
-      setTimeout(() => loadingScreen.remove(), 500);
-
-      ScrollReveal().reveal(".bottom", {
-        duration: 1600,
-        origin: "bottom",
-        distance: "50px",
-        viewFactor: 0,
-        delay: 100,
-        reset: false,
-      });
-    });
-}
-
-window.addEventListener("load", (event) => {
-  fetchDataAndGenerateHTML();
-  console.log("loading");
-  try {
-    var memo = localStorage.getItem("memo");
-    console.log(memo);
-  } catch (e) {
-    console.log(e);
-  }
-  $(".memo-box").val(memo);
-});
-$(".save").click(function () {
-  var memo = $(".memo-box").val();
-  localStorage.setItem("memo", memo);
-  console.log(memo);
-});
