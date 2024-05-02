@@ -93,4 +93,20 @@ function fetchDataAndGenerateHTML() {
     });
 }
 
-window.addEventListener("load", fetchDataAndGenerateHTML);
+
+window.addEventListener("load", (event) => {
+  console.log("loading");
+  try{
+  var memo = localStorage.getItem("memo");
+  console.log(memo)
+
+	}catch(e){
+		console.log(e)
+	}
+	$(".memo-box").val(memo)
+});
+$(".save").click(function() {
+var memo = $(".memo-box").val()
+localStorage.setItem("memo", memo);
+console.log(memo)
+})
