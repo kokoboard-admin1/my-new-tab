@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang = "ja">
+  <head>
+	 <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <base target="_top">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+	 <style>
+	 	.box {
+			display:flex;
+		} 
+		.title-decide {
+			font-size: 20px;
+		}
+		.key {
+        background-color: #00afcc;
+        color: white;
+        padding: 5px 11px;
+        margin: 3px;
+        border-radius: 7px;
+      }
+		.key-box {
+			display:flex;
+			align-items: center;
+		}
+		.form {
+			margin: 10px;
+			border: 0;
+			outline: none;
+			border-bottom: 2px solid lightgray;
+			background: none;
+			transition: all 0.15s 0s;
+		}
+		.form:focus-visible {
+			border-bottom: 2px solid black;
+		}
+		.save-button {
+			border: none;
+			background-color: #3cb371;
+			color: white;
+			width: 70px;
+			height: 40px;
+			border-radius: 10px;
+			transition: all 0.25s 0s;
+		}
+		.save-button:hover {
+			background-color: #45cc82 
+		}
+		.save-button:active {
+			background-color: #349961;
+		}
+		h1 {
+			margin: 40px;
+		}
+		.inner {
+			margin: 0 40px;
+		}
+	 </style>
+  </head>
+  <body>
+    <h1>CSK Option</h1>
+	 <div class = "inner">
+	 <p class = "title-decide">ここではデバイスごとにユーザーカスタムショートカットキーを設定できます！</p>
+	 <div class = "box">
+	 <div class = "key-box"><div class = "key">Alt</div> + <div class = "key">C</div></div>
+		 <input class = "form" type="text" id = "url" placeholder="Url" value = ""  autocomplete="off" />
+		 <select class = "form" name="example" id = "selecter">
+		<option value = "_top">同じページに表示</option>
+		<option value = "_blank">新しいタブに表示</option>
+		</select>
+		<button class = "form save-button" id = "save">保存</button>
+	</div>
+	 <div class = "box">
+	 <div class = "key-box"><div class = "key">Alt</div> + <div class = "key">K</div></div>
+		 <input class = "form" type="text" id = "url2" placeholder="Url" value = ""  autocomplete="off" />
+		 <select class = "form" name="example" id = "selecter2">
+		<option value = "_top">同じページに表示</option>
+		<option value = "_blank">新しいタブに表示</option>
+		</select>
+		<button class = "form save-button" id = "save2">保存</button>
+	</div>
+	</div>
+	 <script type = "text/javascript" src = "js/option.js">
+	 </script>
+  </body>
+</html>

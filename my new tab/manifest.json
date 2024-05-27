@@ -1,6 +1,6 @@
 {
   "name": "my-new-tab-page",
-  "manifest_version": 2,
+  "manifest_version": 3,
 	"icons": {
 		"16": "images/16.png",
 		"48": "images/48.png",
@@ -8,9 +8,16 @@
 	},
   "description": "My new tab page.",
   "version": "1.0.0",
-  "permissions" : ["management"],
+  
+  "permissions": [
+        "storage"
+    ], 
   "chrome_url_overrides" : {
     "newtab": "index.html"
   },
-  "content_security_policy": "script-src 'self' 'sha256-s0vuLBgwpB2R+xnzb50r5beHfdPIjT4YbyoBToYEFPU=' 'https://script.google.com/;  object-src 'self';"
+  "options_ui": {
+        "page": "options.html",
+        "open_in_tab": true
+    }
+  
 }
